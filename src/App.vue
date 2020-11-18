@@ -38,6 +38,12 @@
     </v-app-bar>
 
     <v-main>
+       <amplify-authenticator>
+        <div>
+          My App
+          <amplify-sign-out></amplify-sign-out>
+        </div>
+      </amplify-authenticator>
       <HelloWorld/>
     </v-main>
   </v-app>

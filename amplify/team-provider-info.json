@@ -1,23 +1,31 @@
 {
-    "dev": {
-        "awscloudformation": {
-            "AuthRoleName": "amplify-familyfrontend-dev-224919-authRole",
-            "UnauthRoleArn": "arn:aws:iam::152377991297:role/amplify-familyfrontend-dev-224919-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::152377991297:role/amplify-familyfrontend-dev-224919-authRole",
-            "Region": "ap-northeast-1",
-            "DeploymentBucketName": "amplify-familyfrontend-dev-224919-deployment",
-            "UnauthRoleName": "amplify-familyfrontend-dev-224919-unauthRole",
-            "StackName": "amplify-familyfrontend-dev-224919",
-            "StackId": "arn:aws:cloudformation:ap-northeast-1:152377991297:stack/amplify-familyfrontend-dev-224919/dc937a00-29a4-11eb-a40f-067778e87df6",
-            "AmplifyAppId": "d1fjtz0ws1iwh2"
-        },
-        "categories": {
-            "hosting": {
-                "amplifyhosting": {
-                    "appId": "d1fjtz0ws1iwh2",
-                    "type": "cicd"
-                }
-            }
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-familyfrontend-dev-224919-authRole",
+      "UnauthRoleArn": "arn:aws:iam::152377991297:role/amplify-familyfrontend-dev-224919-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::152377991297:role/amplify-familyfrontend-dev-224919-authRole",
+      "Region": "ap-northeast-1",
+      "DeploymentBucketName": "amplify-familyfrontend-dev-224919-deployment",
+      "UnauthRoleName": "amplify-familyfrontend-dev-224919-unauthRole",
+      "StackName": "amplify-familyfrontend-dev-224919",
+      "StackId": "arn:aws:cloudformation:ap-northeast-1:152377991297:stack/amplify-familyfrontend-dev-224919/dc937a00-29a4-11eb-a40f-067778e87df6",
+      "AmplifyAppId": "d1fjtz0ws1iwh2"
+    },
+    "categories": {
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d1fjtz0ws1iwh2",
+          "type": "cicd"
         }
+      },
+      "auth": {
+        "familyfrontenda4afb9a7": {
+          "userPoolId": "ap-northeast-1_dsoXgZWm2",
+          "userPoolName": "test",
+          "webClientId": "bnop9uroeqisd4menkrbogson",
+          "nativeClientId": "2a75ksa582q256ren3ism80fd7"
+        }
+      }
     }
+  }
 }
