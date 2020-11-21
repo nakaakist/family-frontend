@@ -36,14 +36,8 @@
         <v-icon>mdi-open-in-new</v-icon>
       </v-btn>
     </v-app-bar>
-
+    <router-view></router-view>
     <v-main>
-       <amplify-authenticator>
-        <div>
-          My App
-          <amplify-sign-out></amplify-sign-out>
-        </div>
-      </amplify-authenticator>
       <HelloWorld/>
     </v-main>
   </v-app>
