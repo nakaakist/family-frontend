@@ -6,13 +6,5 @@
       "lastPushTimeStamp": "2020-11-18T15:13:28.343Z"
     }
   },
-  "auth": {
-    "familyfrontenda4afb9a7": {
-      "service": "Cognito",
-      "serviceType": "imported",
-      "providerPlugin": "awscloudformation",
-      "dependsOn": [],
-      "customAuth": false
-    }
-  }
+  "auth": {}
 }

@@ -17,14 +17,6 @@
           "appId": "d1fjtz0ws1iwh2",
           "type": "cicd"
         }
-      },
-      "auth": {
-        "familyfrontenda4afb9a7": {
-          "userPoolId": "ap-northeast-1_dsoXgZWm2",
-          "userPoolName": "test",
-          "webClientId": "bnop9uroeqisd4menkrbogson",
-          "nativeClientId": "2a75ksa582q256ren3ism80fd7"
-        }
       }
     }
   }
