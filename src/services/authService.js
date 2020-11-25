@@ -1,10 +1,6 @@
 'use strict';
 
-import {
-  AuthenticationDetails,
-	CognitoUserPool,
-	CognitoUser
-} from 'amazon-cognito-identity-js';
+import { AuthenticationDetails, CognitoUserPool, CognitoUser } from 'amazon-cognito-identity-js';
 import config from '../config';
 import * as AWS from 'aws-sdk/global';
 
@@ -17,7 +13,7 @@ const getUserPool = () => {
   };
 
   return new CognitoUserPool(userPoolData);
-}
+};
 
 const login = async (username, password) => {
   const authnData = {
@@ -29,7 +25,7 @@ const login = async (username, password) => {
   const userPool = getUserPool();
   const userData = {
     Username: username,
-    Pool: userPool,
+    Pool: userPool
   };
 
   const cognitoUser = new CognitoUser(userData);
@@ -37,17 +33,17 @@ const login = async (username, password) => {
   cognitoUser.authenticateUser(authnDetails, {
     onSuccess: function (result) {
       const loginInfos = {};
-      loginInfos[`cognito-idp.${config.AWSRegion}.amazonaws.com/${config.CognitoUserPoolId}`] = result
-        .getIdToken()
-        .getJwtToken()
+      loginInfos[
+        `cognito-idp.${config.AWSRegion}.amazonaws.com/${config.CognitoUserPoolId}`
+      ] = result.getIdToken().getJwtToken();
 
       AWS.config.credentials = new AWS.CognitoIdentityCredentials({
         IdentityPoolId: config.CognitoIdentityPoolId,
-        Logins: loginInfos,
+        Logins: loginInfos
       });
 
       //refreshes credentials using AWS.CognitoIdentity.getCredentialsForIdentity()
-      AWS.config.credentials.refresh(error => {
+      AWS.config.credentials.refresh((error) => {
         if (error) {
           console.error(error);
           Promise.reject(error);
@@ -68,11 +64,11 @@ const login = async (username, password) => {
       Promise.resolve({
         status: 'passwordChangeRequired',
         userAttributes: userAttributes
-      })
+      });
     }
-//        delete userAttributes.email_verified;
-//        cognitoUser.completeNewPasswordChallenge('hogehoge', userAttributes, this);
+    //        delete userAttributes.email_verified;
+    //        cognitoUser.completeNewPasswordChallenge('hogehoge', userAttributes, this);
   });
-}
+};
 
-export default { login }
+export default { login };

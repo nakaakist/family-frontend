@@ -1,9 +1,9 @@
 <template>
   <v-app>
-    <Navbar/>
+    <Navbar />
     <v-main>
       <router-view></router-view>
-      <v-divider/>
+      <v-divider />
     </v-main>
   </v-app>
 </template>
@@ -20,6 +20,6 @@ export default {
 
   data: () => ({
     //
-  }),
+  })
 };
 </script>
