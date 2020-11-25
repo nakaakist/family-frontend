@@ -9,7 +9,9 @@
   },
   "dependencies": {
     "@aws-amplify/ui-vue": "^0.2.27",
+    "amazon-cognito-identity-js": "^4.5.5",
     "aws-amplify": "^3.3.8",
+    "aws-sdk": "^2.798.0",
     "core-js": "^3.6.5",
     "vue": "^2.6.11",
     "vue-router": "^3.4.9",

@@ -1,8 +1,12 @@
 <template>
-  <amplify-authenticator>
-    <div>
-      My App
-      <amplify-sign-out></amplify-sign-out>
-    </div>
-  </amplify-authenticator>
+  <div>
+    My App
+  </div>
 </template>
+
+<script>
+import authService from '../common/authService';
+(async () => {
+  await authService.login('nariyuki@example.com', 'hogehoge');
+})();
+</script>
