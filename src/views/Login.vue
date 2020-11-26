@@ -1,12 +1,13 @@
 <template>
-  <div>
-    My App
-  </div>
+  <div>My App</div>
 </template>
 
 <script>
-import authService from '../common/authService';
+import authService from '@/services/authService';
 (async () => {
-  await authService.login('nariyuki@example.com', 'hogehoge');
+  const result = await authService.login('nariyuki@example.com', 'hogehoge');
+  console.log(result);
+  const isLogged = await authService.checkAuth();
+  console.log('logged in?', isLogged);
 })();
 </script>

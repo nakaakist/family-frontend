@@ -15,6 +15,44 @@ const getUserPool = () => {
   return new CognitoUserPool(userPoolData);
 };
 
+const authenticate = (user, authnDetails) => {
+  return new Promise((resolve, reject) => {
+    user.authenticateUser(authnDetails, {
+      onSuccess: function (result) {
+        const loginInfos = {};
+        loginInfos[
+          `cognito-idp.${config.AWSRegion}.amazonaws.com/${config.CognitoUserPoolId}`
+        ] = result.getIdToken().getJwtToken();
+
+        AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+          IdentityPoolId: config.CognitoIdentityPoolId,
+          Logins: loginInfos
+        });
+
+        //refreshes credentials using AWS.CognitoIdentity.getCredentialsForIdentity()
+        return AWS.config.credentials.refresh((error) => {
+          if (error) {
+            reject(error);
+          }
+
+          resolve({ status: 'success' });
+        });
+      },
+      onFailure: function (error) {
+        reject(error);
+      },
+      newPasswordRequired: function (userAttributes) {
+        resolve({
+          status: 'passwordChangeRequired',
+          userAttributes
+        });
+      }
+      //        delete userAttributes.email_verified;
+      //        cognitoUser.completeNewPasswordChallenge('hogehoge', userAttributes, this);
+    });
+  });
+};
+
 const login = async (username, password) => {
   const authnData = {
     Username: username,
@@ -28,47 +66,36 @@ const login = async (username, password) => {
     Pool: userPool
   };
 
-  const cognitoUser = new CognitoUser(userData);
+  const user = new CognitoUser(userData);
+  return await authenticate(user, authnDetails);
+};
 
-  cognitoUser.authenticateUser(authnDetails, {
-    onSuccess: function (result) {
-      const loginInfos = {};
-      loginInfos[
-        `cognito-idp.${config.AWSRegion}.amazonaws.com/${config.CognitoUserPoolId}`
-      ] = result.getIdToken().getJwtToken();
+const logout = () => {
+  const userPool = getUserPool();
+  const currentUser = userPool.getCurrentUser();
+  currentUser.signOut();
+};
 
-      AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-        IdentityPoolId: config.CognitoIdentityPoolId,
-        Logins: loginInfos
-      });
+const checkAuth = async () => {
+  const userPool = getUserPool();
+  const currentUser = userPool.getCurrentUser();
 
-      //refreshes credentials using AWS.CognitoIdentity.getCredentialsForIdentity()
-      AWS.config.credentials.refresh((error) => {
-        if (error) {
-          console.error(error);
-          Promise.reject(error);
-        } else {
-          // Instantiate aws sdk service objects now that the credentials have been updated.
-          // example: var s3 = new AWS.S3();
-          console.log('Successfully logged!');
-          Promise.resolve({ status: 'success' });
-        }
-      });
-    },
-    onFailure: function (error) {
-      console.log(error.message || JSON.stringify(error));
-      Promise.reject(error);
-    },
-    newPasswordRequired: function (userAttributes) {
-      console.log('password change required');
-      Promise.resolve({
-        status: 'passwordChangeRequired',
-        userAttributes: userAttributes
-      });
-    }
-    //        delete userAttributes.email_verified;
-    //        cognitoUser.completeNewPasswordChallenge('hogehoge', userAttributes, this);
+  if (currentUser === null) {
+    return false;
+  }
+
+  return await new Promise((resolve, reject) => {
+    currentUser.getSession((error, session) => {
+      if (error) {
+        reject(error);
+      }
+      resolve(session.isValid());
+    });
   });
 };
 
-export default { login };
+export default {
+  login,
+  logout,
+  checkAuth
+};
