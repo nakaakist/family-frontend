@@ -1,14 +1,13 @@
-'use strict'
+'use strict';
 
 module.exports = {
-  env: {
-    es6: true,
-  },
+  parser: 'vue-eslint-parser',
   parserOptions: {
-    sourceType: 'module'
+    ecmaVersion: 2020,
+    sourceType: 'module',
   },
-  parser: 'babel-eslint',
-  extends: [
-    'prettier'
-  ]
-}
+  extends: ['vue', 'plugin:vue/recommended'],
+  rules: {
+    'space-before-function-paren': 'off',
+  }
+};

@@ -2,14 +2,14 @@
   <v-app>
     <Navbar />
     <v-main>
-      <router-view></router-view>
+      <router-view />
       <v-divider />
     </v-main>
   </v-app>
 </template>
 
 <script>
-import Navbar from './components/Navbar';
+import Navbar from './components/Navbar'
 
 export default {
   name: 'App',
@@ -21,5 +21,5 @@ export default {
   data: () => ({
     //
   })
-};
+}
 </script>

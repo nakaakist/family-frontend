@@ -1,94 +1,95 @@
-'use strict';
+'use strict'
 
-import authService from '@/services/authService';
+import authService from '@/services/authService'
 
-import { LOGIN, LOGOUT, CHECK_AUTH } from '../actionTypes';
+import { LOGIN, LOGOUT, RESET_PASSWORD, CHECK_AUTH } from '../actionTypes'
 import {
   LOGIN_SUCCESS,
-  PASSWORD_CHANGE_REQUIRED,
   LOGIN_ERROR,
+  PASSWORD_RESET_SUCCESS,
+  PASSWORD_RESET_ERROR,
   AUTH_CHECK_SUCCESS,
+  AUTH_CHECK_FAIL,
   REMOVE_AUTH
-} from '../mutationTypes';
+} from '../mutationTypes'
 
 const state = {
-  user: {},
   isAuthenticated: false,
-  isPasswordChangeRequired: false,
   error: null
-};
+}
 
 const actions = {
-  async [LOGIN]({ commit }, username, password) {
+  async [LOGIN]({ commit }, { username, password }) {
     try {
-      const result = await authService.login(username, password);
+      const result = await authService.login(username, password)
       if (result.status === 'success') {
-        commit(LOGIN_SUCCESS);
-      } else if (result.status === 'passwordChangeRequuired') {
-        commit(PASSWORD_CHANGE_REQUIRED, result.userAttributes);
+        commit(LOGIN_SUCCESS)
       } else {
-        commit(LOGIN_ERROR, null);
+        commit(LOGIN_ERROR, null)
       }
     } catch (error) {
-      console.error(error);
-      commit(LOGIN_ERROR, error);
+      commit(LOGIN_ERROR, error)
+    }
+  },
+  async [RESET_PASSWORD]({ commit }, { username, currentPassword, password }) {
+    try {
+      await authService.resetPassword(username, currentPassword, password)
+      commit(PASSWORD_RESET_SUCCESS)
+    } catch (error) {
+      commit(PASSWORD_RESET_ERROR, error)
     }
   },
   async [CHECK_AUTH]({ commit }) {
     try {
-      const isAuthenticated = await authService.checkAuth();
+      const isAuthenticated = await authService.checkAuth()
       if (isAuthenticated) {
-        commit(AUTH_CHECK_SUCCESS);
+        commit(AUTH_CHECK_SUCCESS)
       } else {
-        commit(REMOVE_AUTH, null);
+        commit(AUTH_CHECK_FAIL)
       }
     } catch (error) {
-      console.error(error);
-      commit(REMOVE_AUTH, error);
+      commit(REMOVE_AUTH, error)
     }
   },
   async [LOGOUT]({ commit }) {
     try {
-      await authService.logout();
+      await authService.logout()
     } catch (error) {
-      commit(REMOVE_AUTH, error);
+      commit(REMOVE_AUTH, error)
     }
   }
-};
+}
 
 const mutations = {
   [LOGIN_SUCCESS](state) {
-    state.isAuthenticated = true;
-    state.isPasswordChangeRequired = false;
-    state.error = null;
-  },
-  [PASSWORD_CHANGE_REQUIRED](state, userAttributes) {
-    state.user = userAttributes;
-    state.isAuthenticated = false;
-    state.isPasswordChangeRequired = true;
-    state.error = null;
+    state.isAuthenticated = true
+    state.error = null
   },
   [LOGIN_ERROR](state, error) {
-    state.user = {};
-    state.isAuthenticated = false;
-    state.isPasswordChangeRequired = true;
-    state.error = error;
+    state.isAuthenticated = false
+    state.error = error
+  },
+  [PASSWORD_RESET_SUCCESS](state, error) {
+    state.isAuthenticated = true
+    state.error = null
+  },
+  [PASSWORD_RESET_ERROR](state, error) {
+    state.error = error
   },
   [AUTH_CHECK_SUCCESS](state) {
-    state.isAuthenticated = true;
-    state.isPasswordChangeRequired = false;
-    state.error = null;
+    state.isAuthenticated = true
+    state.error = null
+  },
+  [AUTH_CHECK_FAIL](state) {
+    state.isAuthenticated = false
   },
   [REMOVE_AUTH](state, error) {
-    state.user = {};
-    state.isAuthenticated = false;
-    state.isPasswordChangeRequired = false;
-    state.error = error;
+    state.isAuthenticated = false
+    state.error = error
   }
-};
-
+}
 export default {
   state,
   actions,
   mutations
-};
+}
