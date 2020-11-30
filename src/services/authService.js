@@ -1,15 +1,14 @@
 'use strict'
 
 import { AuthenticationDetails, CognitoUserPool, CognitoUser } from 'amazon-cognito-identity-js'
-import config from '../config'
 import * as AWS from 'aws-sdk/global'
 
-AWS.config.region = config.AWSRegion
+AWS.config.region = process.env.VUE_APP_AWS_REGION
 
 const getUserPool = () => {
   const userPoolData = {
-    UserPoolId: config.CognitoUserPoolId,
-    ClientId: config.CognitoUserPoolClientId
+    UserPoolId: process.env.VUE_APP_COGNITO_USER_POOL_ID,
+    ClientId: process.env.VUE_APP_COGNITO_USER_POOL_CLIENT_ID
   }
 
   return new CognitoUserPool(userPoolData)
@@ -31,11 +30,11 @@ const authenticate = (user, authnDetails) => {
       onSuccess: function (result) {
         const loginInfos = {}
         loginInfos[
-          `cognito-idp.${config.AWSRegion}.amazonaws.com/${config.CognitoUserPoolId}`
+          `cognito-idp.${process.env.VUE_APP_AWS_REGION}.amazonaws.com/${process.env.VUE_APP_COGNITO_USER_POOL_ID}`
         ] = result.getIdToken().getJwtToken()
 
         AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-          IdentityPoolId: config.CognitoIdentityPoolId,
+          IdentityPoolId: process.env.VUE_APP_COGNITO_IDENTITY_POOL_ID,
           Logins: loginInfos
         })
 
